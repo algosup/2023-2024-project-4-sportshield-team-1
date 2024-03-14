@@ -45,12 +45,7 @@ In this project we're focusing on refining the functionality and code base of *S
 - [Non-functional requirements](#non-functional-requirements)
   - [Performance](#performance)
   - [Maintainability](#maintainability)
-  - [Scalability](#scalability)
-  - [Portability](#portability)
-  - [Usability](#usability)
   - [Security](#security)
-- [Risks and assumptions](#risks-and-assumptions)
-- [Future improvements](#future-improvements)
 - [Glossary](#glossary)
 </summary></details>
 
@@ -271,3 +266,27 @@ By integrating these advanced Alarm Management features into the *SportShield* s
 | Piezoelectric Buzzer  | <img src="imgs/Buzzer.png"> |  |  | 12V, oscillator control circuit, ~ 90-100 dB |
 | Lithium-Polymer Battery | <img src="imgs/Battery.png"> | | 5.1 x 3.5 x 0.6 cm | 3.7V, 1100mAh, 4.1Wh |
 | NFC Antenna | <img src="imgs/NFC.png"> | | 5.5 x 4.5 x 0.017 cm | 13.56MHz frequency |
+
+
+## Non-functional requirements
+
+### Performance
+The performance of the *SportShield* system is crucial for ensuring effective and responsive protection against the theft of sports equipment. The following performance requirements must be met to deliver an optimal user experience while maintaining robust security.
+
+### Maintainability
+Maintainability is a key factor in ensuring the long-term success and manageability of the *SportShield* system. System design and implementation should follow best practices allowing for easy updates, bug fixes, and improvements.
+
+### Security
+Security is paramount for the *SportShield* system, given its role in protecting valuable sports equipment from theft. The system must employ comprehensive security measures to prevent unauthorized access and ensure data integrity and confidentiality.
+
+## Glossary
+
+| **Concept**           | **Definition**                                                                                                                                                                                                                                                                                                                                      | **GitHub Links**                                |
+|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
+| **GSM/2G Module**   | The Global System for Mobile Communications (GSM) is a standard developed by the European Telecommunications Standards Institute (ETSI) to describe the protocols for second-generation (2G) digital cellular networks used by mobile devices such as mobile phones and tablets. GSM is also a trade mark owned by the GSM Association.GSM may also refer to the Full Rate voice codec.                                                         | [GSM/2G Module](https://en.wikipedia.org/wiki/GSM)   |
+| **GNSS Module** | GPS/GNSS Modules are devices that provide position, navigation, and tracking data by receiving signals from multiple satellites. This is the largest database of GNSS Modules. Use the filters to narrow down on products based on your requirement. Modules include, GPS, Galileo, QZSS, GLONASS, BEIDOU, and SBAS.                                                                                                                                                                            | [GNSS Module](https://en.wikipedia.org/wiki/GNSS_applications) |
+| **Microcontroller**          | A microcontroller is an integrated circuit that brings together the essential elements of a computer: processor, memories, peripheral units and input-output interfaces.                                                        | [Microcontroller](https://en.wikipedia.org/wiki/Microcontroller)     |
+| **NFC Chip**          | Near-field communication, often referred to by its English acronym NFC, is a short-range, high-frequency wireless communication technology, allowing the exchange of information between devices up to a distance approximately 10 cm in the general case.                                                                                                                                                 | [NFC Chip](https://en.wikipedia.org/wiki/Near-field_communication)     |
+| **Arduino**| Arduino is the brand of an open-source prototyping platform that allows users to create interactive electronic objects from hardware-free electronic boards on which a microcontroller is located. The diagrams of these electronic cards are published under a free license.                                                            | [Arduino](https://en.wikipedia.org/wiki/Arduino) |
+| **IDE**               | Integrated Development Environment - Software combining tools for software development, including a text editor, compiler/interpreter, debugger, and other features. Enhances programmer efficiency and simplifies development tasks.                                                                                                          | [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment)             |
+| **C++ Language**        | C++ is a compiled programming language allowing programming under multiple paradigms, including procedural programming, object-oriented programming, and generic programming.                                                            |                       [C++ language](https://en.wikipedia.org/wiki/C%2B%2B) |
