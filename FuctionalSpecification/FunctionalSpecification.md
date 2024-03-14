@@ -24,15 +24,9 @@ In this project we're focusing on refining the functionality and code base of *S
 - [Deliverables and milestones](#deliverables-and-milestones)
     - [Final product](#final-product)
 - [Personas and use cases](#personas-and-use-cases)
-  - [Persona 1 - Oceane Thomas](#persona-1---oceane-thomas)
-    - [Goals](#goals)
-    - [Challenges](#challenges)
-  - [Persona 2 - John Mayers](#persona-2---john-mayers)
-    - [Goals](#goals-1)
-    - [Challenges](#challenges-1)
-  - [Persona 3 - Patricia Farmer](#persona-3---patricia-farmer)
-    - [Goals](#goals-2)
-    - [Challenges](#challenges-2)
+  - [Persona 1 - Fabien](#persona-1---fabien)
+  - [Persona 2 - Amina](#persona-2---amina)
+  - [Persona 3 - Thomas](#persona-3---thomas)
 - [Acceptance criteria](#acceptance-criteria)
 - [Solution overview](#solution-overview)
   - [System architecture](#system-architecture)
@@ -122,43 +116,18 @@ The Final product consists of:
 
 ## Personas and use cases
 
-### Persona 1 - Oceane Thomas
+### Persona 1 - Fabien
 
-Oceane Thomas is an 18-year-old student working to become a CPU Architect. She already knows x64 assembly and C.
+<img src="imgs/Fabien.png" width=""/>
 
-#### Goals
-  - Oceane wants to learn a new assembly language to gain insight into the various steps and implementations of assembly.
-  - She hopes to better understand CPU architecture choices by exploring how a virtual CPU works.
 
-#### Challenges
-  - Oceane is looking for an open-source project that allows her to examine its inner workings.
-  - She seeks a virtual processor that enables her to observe processes in greater detail than on physical hardware.
-  - She needs an easy-to-learn assembly language, as she does not want to spend too much time on the assembly itself.
+### Persona 2 - Amina
 
-### Persona 2 - John Mayers
+<img src="imgs/Amina.png" width=""/>
 
-John is a 34-year-old Computer Architect Researcher at IBM. He has been in this role for a few years and believes that drawing inspiration from external projects will enhance his creativity.
+### Persona 3 - Thomas
 
-#### Goals
-  - He aims to discover innovative ideas for CPU architecture.
-  - He is looking for solutions that are practical for general use.
-
-#### Challenges
-  - He needs a fresh perspective on assembly, as he is specifically seeking new viewpoints.
-  - The instructions must be realistically implementable in hardware.
-  - He needs to test and prototype quickly without necessarily having the physical CPU on hand.
-
-### Persona 3 - Patricia Farmer
-
-Patricia Farmer is a 31-year-old CTO at a bank. She recently assumed the position and realized that the bank's internal communication system urgently needs an upgrade.
-
-#### Goals
-  - She aims to revamp the bank's internal communication system to make it faster.
-  - She also intends to enhance its security.
-
-#### Challenges
-  - The language and system architecture must be different from the old one to render existing malware obsolete.
-  - She cannot replace all the hardware at once. A virtual CPU is temporarily needed to run the new programs on the old hardware.
+<img src="imgs/Thomas.png" width=""/>
 
 ## Acceptance Criteria
 
