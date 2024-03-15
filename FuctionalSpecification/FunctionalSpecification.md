@@ -110,10 +110,11 @@ We must also be careful not to damage the equipment provided for the project for
 #### Final product
 
 The Final product consists of:
-- Improvement of the battery duration.
-- A good implementation of the NFC chip.
-- Better alarm management.
-
+- Battery Consumption Management.
+- Device Management with NFC.
+- Alarm Management and Simultaneous Actions.
+- Security Issues
+ 
 ## Personas and use cases
 
 ### Persona 1 - Fabien
@@ -255,19 +256,6 @@ The Alarm Management component of the *SportShield* system is a critical feature
 
 By integrating these advanced Alarm Management features into the *SportShield* system, we provide an effective, customizable, and user-friendly solution for protecting valuable sports equipment against theft. This comprehensive approach ensures that users can enjoy their sporting activities with confidence, knowing their equipment is secure.
 
-## Hardware Components
-
-| Component | Photo | Model | Dimensions | Key Features |
-|---|---|---|---|---|
-| Microcontroller | <img src="imgs/BLE.png">| Xiao BLE Sense nrf52840 | 2 x 2 x 0.5 cm | BLE 5.0, 6 DoF IMU, 11 GPIO (UART, SPI, I2C) |
-| GNSS Module | <img src="imgs/GNSS.png"> | GNSS PA1010D | 2.5 x 2.5 x 0.1 cm | Integrated antenna, UART & I2C |
-| GSM/2G Module | <img src="imgs/GSM.png"> | SIM800L | 2.2 x 1.8 x 0.5 cm | GPRS & HTTP UART, SIM Card holder, With 1NCE SIM card  |
-| Electromagnet | <img src="imgs/Electromagnet.png"> | | 2.7 x 1.6 x 1.3 cm | 12V, 500mA |
-| Piezoelectric Buzzer  | <img src="imgs/Buzzer.png"> |  |  | 12V, oscillator control circuit, ~ 90-100 dB |
-| Lithium-Polymer Battery | <img src="imgs/Battery.png"> | | 5.1 x 3.5 x 0.6 cm | 3.7V, 1100mAh, 4.1Wh |
-| NFC Antenna | <img src="imgs/NFC.png"> | | 5.5 x 4.5 x 0.017 cm | 13.56MHz frequency |
-
-
 ## Non-functional requirements
 
 ### Performance
@@ -282,10 +270,7 @@ Security is paramount for the *SportShield* system, given its role in protecting
 ## Glossary
 
 | **Concept**           | **Definition**                                                                                                                                                                                                                                                                                                                                      | **GitHub Links**                                |
-|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
-| **GSM/2G Module**   | The Global System for Mobile Communications (GSM) is a standard developed by the European Telecommunications Standards Institute (ETSI) to describe the protocols for second-generation (2G) digital cellular networks used by mobile devices such as mobile phones and tablets. GSM is also a trade mark owned by the GSM Association.GSM may also refer to the Full Rate voice codec.                                                         | [GSM/2G Module](https://en.wikipedia.org/wiki/GSM)   |
-| **GNSS Module** | GPS/GNSS Modules are devices that provide position, navigation, and tracking data by receiving signals from multiple satellites. This is the largest database of GNSS Modules. Use the filters to narrow down on products based on your requirement. Modules include, GPS, Galileo, QZSS, GLONASS, BEIDOU, and SBAS.                                                                                                                                                                            | [GNSS Module](https://en.wikipedia.org/wiki/GNSS_applications) |
-| **Microcontroller**          | A microcontroller is an integrated circuit that brings together the essential elements of a computer: processor, memories, peripheral units and input-output interfaces.                                                        | [Microcontroller](https://en.wikipedia.org/wiki/Microcontroller)     |
+|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|                                     
 | **NFC Chip**          | Near-field communication, often referred to by its English acronym NFC, is a short-range, high-frequency wireless communication technology, allowing the exchange of information between devices up to a distance approximately 10 cm in the general case.                                                                                                                                                 | [NFC Chip](https://en.wikipedia.org/wiki/Near-field_communication)     |
 | **Arduino**| Arduino is the brand of an open-source prototyping platform that allows users to create interactive electronic objects from hardware-free electronic boards on which a microcontroller is located. The diagrams of these electronic cards are published under a free license.                                                            | [Arduino](https://en.wikipedia.org/wiki/Arduino) |
 | **IDE**               | Integrated Development Environment - Software combining tools for software development, including a text editor, compiler/interpreter, debugger, and other features. Enhances programmer efficiency and simplifies development tasks.                                                                                                          | [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment)             |
