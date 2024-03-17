@@ -46,7 +46,9 @@ In this project we're focusing on refining the functionality and code base of *S
   - [Performance](#performance)
   - [Maintainability](#maintainability)
   - [Security](#security)
+- [Risks and Assumptions](#risks-and-assumptions)
 - [Glossary](#glossary)
+- [Conclusion](#conclusion)
 </summary></details>
 
 ## Stakeholders
@@ -267,6 +269,58 @@ Maintainability is a key factor in ensuring the long-term success and manageabil
 ### Security
 Security is paramount for the *SportShield* system, given its role in protecting valuable sports equipment from theft. The system must employ comprehensive security measures to prevent unauthorized access and ensure data integrity and confidentiality.
 
+## Risks and Assumptions
+
+| ID    | Description                                           | Risks                                                                                                                                                                   | Impact                                                    | Likelihood                                                | Solution                                                                                                                                                                                                                       |
+|-------|-------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------|-----------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **1** | Integrating NFC Device Management                     | Difficulty in integrating NFC with existing systems may lead to delays or reduced functionality.                                                                         | ![High](https://img.shields.io/badge/High-bb2124)         | ![Medium](https://img.shields.io/badge/Medium-E4A11B)     | Conduct thorough research and prototyping with NFC technology to understand integration challenges. Collaborate with NFC experts or consult with the NFC chip providers for technical support.                                  |
+| **2** | Optimizing Battery Usage                              | Inadequate optimization could result in poor battery life, affecting device reliability.                                                                                  | ![High](https://img.shields.io/badge/High-bb2124)         | ![High](https://img.shields.io/badge/High-bb2124)         | Implement adaptive power-saving features and rigorous testing under various usage scenarios to identify and address energy inefficiencies.                                                                                      |
+| **3** | Enhancing Alarm Functionality                         | The alarm may not effectively deter theft if it is not loud enough or if it fails to trigger under certain conditions.                                                   | ![High](https://img.shields.io/badge/High-bb2124)         | ![Medium](https://img.shields.io/badge/Medium-E4A11B)     | Design the alarm system with adjustable sensitivity settings and multiple alarm modes (e.g., audible, silent notifications). Perform extensive field testing to ensure reliability.                                              |
+| **4** | Ensuring Device Security                              | Potential vulnerabilities could be exploited by attackers to bypass the alarm or access sensitive user data.                                                             | ![High](https://img.shields.io/badge/High-bb2124)         | ![High](https://img.shields.io/badge/High-bb2124)         | Incorporate advanced encryption and secure authentication methods. Regularly update the software to patch any security vulnerabilities.                                                                                           |
+| **5** | Hardware Reliability and Durability                   | The device's sensors and actuators may fail in harsh physical environments, leading to malfunctions.                                                                     | ![Medium](https://img.shields.io/badge/Medium-E4A11B)     | ![Medium](https://img.shields.io/badge/Medium-E4A11B)     | Select high-quality, durable hardware components. Conduct environmental stress testing to ensure that the device can withstand various conditions.                                                                              |
+| **6** | Compliance with Standards and Regulations             | Failing to comply with legal and industry standards for wireless communication could result in penalties or the need to redesign the system.                              | ![High](https://img.shields.io/badge/High-bb2124)         | ![Low](https://img.shields.io/badge/Low-3B71CA)           | Stay informed about relevant standards and regulations. Engage with legal and compliance experts during the development process to ensure the device meets all requirements.                                                      |
+| **7** | User Acceptance and Ease of Use                       | If the device or its app interface is not user-friendly, it may lead to poor adoption rates among the target audience.                                                   | ![High](https://img.shields.io/badge/High-bb2124)         | ![Medium](https://img.shields.io/badge/Medium-E4A11B)     | Involve potential users in the design process through surveys and usability testing. Iteratively refine the user interface based on feedback to enhance ease of use and satisfaction.                                           |
+| **8** | Project Management and Coordination Among Stakeholders | Misalignment of goals, poor communication, or resource constraints among project members and stakeholders might lead to project delays or failure to meet objectives. | ![Medium](https://img.shields.io/badge/Medium-E4A11B)     | ![Medium](https://img.shields.io/badge/Medium-E4A11B)     | Implement agile project management techniques, ensuring regular meetings, clear communication channels, and flexibility in responding to challenges. Assign clear roles and responsibilities to team members.                    |
+
+
+## Future Improvements for SportShield Project
+
+As we look towards the future of the *SportShield* project, several key enhancements are planned to ensure it remains a leader in sports equipment security technology:
+
+### Advanced Sensor Integration
+- **Objective**: Enhance theft detection and reduce false alarms.
+- **Approach**: Integrate additional sensors, like pressure sensors and gyroscopes, to improve accuracy.
+
+### Machine Learning for Anomaly Detection
+- **Objective**: Autonomously identify theft attempts.
+- **Approach**: Use machine learning to analyze sensor data and user interactions, adjusting sensitivity automatically.
+
+### User Interface Enhancements
+- **Objective**: Improve the app's intuitiveness and accessibility.
+- **Approach**: Simplify the app interface based on user feedback and UX research.
+
+### Energy Efficiency Research
+- **Objective**: Extend battery life with sustainable solutions.
+- **Approach**: Investigate new energy technologies and optimize software for lower consumption.
+
+### Expanded NFC Capabilities
+- **Objective**: Broaden the use of NFC beyond device management.
+- **Approach**: Introduce features like NFC-based payments and integration with fitness apps.
+
+### GPS Integration
+- **Objective**: Provide precise location tracking for stolen equipment.
+- **Approach**: Add GPS tracking with minimal impact on battery life.
+
+### Multi-Device Management
+- **Objective**: Simplify the management of multiple *SportShield* devices.
+- **Approach**: Update the app to support multiple devices, enhancing user convenience.
+
+### Community Features
+- **Objective**: Foster a community around *SportShield* for shared tips and alerts.
+- **Approach**: Add social features to the app, including local groups and safety tips sharing.
+
+These enhancements aim to solidify *SportShield*'s position as a comprehensive and user-friendly solution for protecting sports equipment.
+
 ## Glossary
 
 | **Concept**           | **Definition**                                                                                                                                                                                                                                                                                                                                      | **GitHub Links**                                |
@@ -275,3 +329,6 @@ Security is paramount for the *SportShield* system, given its role in protecting
 | **Arduino**| Arduino is the brand of an open-source prototyping platform that allows users to create interactive electronic objects from hardware-free electronic boards on which a microcontroller is located. The diagrams of these electronic cards are published under a free license.                                                            | [Arduino](https://en.wikipedia.org/wiki/Arduino) |
 | **IDE**               | Integrated Development Environment - Software combining tools for software development, including a text editor, compiler/interpreter, debugger, and other features. Enhances programmer efficiency and simplifies development tasks.                                                                                                          | [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment)             |
 | **C++ Language**        | C++ is a compiled programming language allowing programming under multiple paradigms, including procedural programming, object-oriented programming, and generic programming.                                                            |                       [C++ language](https://en.wikipedia.org/wiki/C%2B%2B) |
+
+## Conclusion
+In conclusion, the *SportShield* project perfectly illustrates how technological innovation can be harnessed for the security of sports equipment. It offers a comprehensive, secure, and user-friendly solution for protecting users' belongings against theft, while meeting high expectations in terms of energy management, functionality, and security. Thanks to the commitment and expertise of the project team, as well as the support of [CORIS INNOVATION](https://www.corisinnovation.com), *SportShield* stands out as a major advancement in the field of sports equipment security, ready to meet current and future challenges.
