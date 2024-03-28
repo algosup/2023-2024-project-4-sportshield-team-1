@@ -41,4 +41,4 @@ Development Environment:
 | <img src="https://avatars.githubusercontent.com/u/145995847?v=4" width="100"> | Séréna BAVAROIS | Technical Leader | [GitHub](https://github.com/NanaChocolat) \| [LinkedIn](https://www.linkedin.com/in/s%C3%A9r%C3%A9na-bavarois-619975218/)|
 | <img src="https://avatars.githubusercontent.com/u/100137905?v=4" width="100"> | Rémy CHARLES | Software Engineer | [GitHub](https://github.com/RemyCHARLES) \| [LinkedIn](https://www.linkedin.com/in/r%C3%A9my-charles-2a8960232/) |
 | <img src="https://avatars.githubusercontent.com/u/145991254?v=4" width="100"> | Camille GAYAT | Technical Writer | [GitHub](https://github.com/CamilleGayat) \| [LinkedIn](https://www.linkedin.com/in/camille-g-a89114293/) |
-| <img src="https://avatars.githubusercontent.com/u/145991204?v=4" width="100"> | Lucas MEGNANT| Quality Assurance | [GitHub](https://github.com/LucasMegnan) \| [LinkedIn](https://www.linkedin.com/in/lucas-megnan/) |
+| <img src="https://avatars.githubusercontent.com/u/145991204?v=4" width="100"> | Lucas MEGNAN | Quality Assurance | [GitHub](https://github.com/LucasMegnan) \| [LinkedIn](https://www.linkedin.com/in/lucas-megnan/) |
