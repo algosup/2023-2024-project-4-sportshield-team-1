@@ -18,9 +18,6 @@ In this project, we're focusing on refining *SportShield*'s functionality and co
 [Test plan](link) by *Lucas MEGNAN*
 
 
-## Management
-
-Soon..
 
 ## Technology used
 
