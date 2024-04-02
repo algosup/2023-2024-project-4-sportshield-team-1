@@ -7,11 +7,9 @@ In this project, we're focusing on refining *SportShield*'s functionality and co
 
 ## Documentation
 
-[Project charter]([link](https://github.com/algosup/2023-2024-project-4-sportshield-team-1/blob/main/Documents/FunctionalSpecification/FunctionalSpecification.md)) by *Mathis LEBEL*
+[Functional specifications](https://github.com/algosup/2023-2024-project-4-sportshield-team-1/blob/main/Documents/FunctionalSpecification/FunctionalSpecification.md) by *Mathis LEBEL*
 
-[Functional specifications](link) by *Mathis LEBEL*
-
-[Technical specifications](link) by *Séréna BAVAROIS*
+[Technical specifications](https://github.com/algosup/2023-2024-project-4-sportshield-team-1/blob/main/Documents/TechnicalSpecification/TechnicalSpecification.md) by *Séréna BAVAROIS*
 
 [User Guide](link) by *Camille GAYAT*
 
