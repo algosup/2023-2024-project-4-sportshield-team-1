@@ -13,7 +13,7 @@ In this project, we're focusing on refining *SportShield*'s functionality and co
 
 [User Guide](link) by *Camille GAYAT*
 
-[Test plan](link) by *Lucas MEGNAN*
+[Test plan](https://github.com/algosup/2023-2024-project-4-sportshield-team-1/blob/main/Documents/QA/TestPlan.md) by *Lucas MEGNAN*
 
 
 
