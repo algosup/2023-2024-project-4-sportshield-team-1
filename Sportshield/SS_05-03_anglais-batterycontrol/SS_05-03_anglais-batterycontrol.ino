@@ -9,10 +9,21 @@
 // IMU
 #include <LSM6DS3.h>
 #include <Wire.h>
-//GPS
+// GPS
 #include <Adafruit_GPS.h>
-//SIM
+// SIM
 #include "SIM800L.h"
+// NFC
+#include <NfcAdapter.h>
+#include <PN532/PN532/PN532.h>
+
+#include <SPI.h>
+#include <PN532/PN532_SPI/PN532_SPI.h>
+#include <PN532/PN532/PN532.h>
+#include <NfcAdapter.h>
+
+PN532_SPI pn532spi(SPI, 10);
+NfcAdapter nfc = NfcAdapter(pn532spi);
 
 //---------------- GLOBAL VARIABLES -----------------------------
 myConfig Config;
@@ -33,9 +44,9 @@ BLEBooleanCharacteristic ActivationCharacteristic("19B10001-E8F2-537E-4F6C-D1047
 BLEBooleanCharacteristic UnlockCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1216", BLEWrite);
 
 BLEDescriptor PasswordDescriptor("2901", "Password");  // Bluetooth® Low Energy Descriptor
-BLEDescriptor NameDescriptor("2901", "Name");
-BLEDescriptor ActivationDescriptor("2901", "Activation");
-BLEDescriptor UnlockDescriptor("2901", "Unlock");
+BLEDescriptor NameDescriptor("2901", "Lovely Team 1");
+BLEDescriptor ActivationDescriptor("2901", "Lock/Activation");
+BLEDescriptor UnlockDescriptor("2901", "Unlock/Disactivation");
 BLEDescriptor MACDescriptor("2901", "MAC Address");
 
 bool BLE_activated = true;  //true if the bluetooth is activated
@@ -65,7 +76,7 @@ SIM800L* sim800l;
 bool send_position = false;
 bool send_move = false;
 
-// Buzzer
+// // Buzzer
 const int buzzerPin = D2;
 void PulseBuzzer(int repetitions, unsigned long durationOn, unsigned long durationOff);
 unsigned long previousMillis = 0;
@@ -91,6 +102,13 @@ float RotationData;
 
 unsigned long StartCoolDown = 0;  //check point for millis aided cooldown
 
+bool interruptFlag = false;
+
+// NFC 
+#define SDA_PIN 0
+#define SCL_PIN 1
+#define PN532_IRQ   (2)
+#define PN532_RESET (3)  // Not connected by default on the NFC Shield
 
 //-------------------------------- SETUP ----------------------------------------
 void setup() {
@@ -98,7 +116,7 @@ void setup() {
   digitalWrite(buzzerPin, HIGH);
   delay(1000);
   digitalWrite(buzzerPin, LOW);
-  Serial.println(" buzzer");
+  Serial.println("buzzer");
 
   pinMode(aimantPin, OUTPUT);  //setup electro-aimant
   digitalWrite(aimantPin, HIGH);
@@ -145,28 +163,120 @@ void setup() {
   sim800l = new SIM800L((Stream*)&Serial2, SIM800_RST_PIN, 200, 512);
   pinMode(SIM800_DTR_PIN, OUTPUT);
   delay(1000);
-  sim_setup();
-  Serial.println("SIM SETUP");
+  //sim_setup();
+  //Serial.println("SIM SETUP");
 
   analogReadResolution(ADC_RESOLUTION);  //setup battery reading
   pinMode(PIN_VBAT, INPUT);
   pinMode(VBAT_ENABLE, OUTPUT);
   digitalWrite(VBAT_ENABLE, LOW);
 
-  Serial.println("fin setup ");
+  Serial.println("end setup ");
   digitalWrite(LEDR, HIGH);
   digitalWrite(LEDG, LOW);
-  Temps();
+  Time();
 
   Serial.print("V Bat: ");
   Serial.println(getBatteryVoltage());
+  Serial.print("Battery Level: ");
+  Serial.println(getBatteryLevel());
+
+  // NFC
+  nfc_setup();
+  Serial.println("NFC setup");
 }
 
 //-------------------------------- LOOP ----------------------------------------
 void loop() {
-
+  // Motion detection
   MotionData = getMotionData();
   RotationData = getRotationData();
+  
+  // Serial command handling
+  static String inputBuffer = ""; 
+  static unsigned long lastInputTime = 0; 
+
+  if (Serial.available() > 0) {
+    char incomingChar = Serial.read();
+
+    if (incomingChar == '\n' || incomingChar == '\r') {
+      inputBuffer.trim(); 
+      
+      if (inputBuffer.equalsIgnoreCase("unlock_mode")) {
+        if (Config.isActivate == true) {
+          Serial.println(F("Unlocking the hardware..."));
+          Config.isActivate = false;
+          interruptBuzzer();
+        } else {
+          Serial.println(F("Hardware already unlocked..."));
+        }
+      } else if (inputBuffer.equalsIgnoreCase("activate_mode")) {
+        if (Config.isActivate == false) {
+          Serial.println(F("Activating the hardware..."));
+          Config.isActivate = true;
+        } else {
+          Serial.println(F("Hardware is already unlocked..."));
+        }
+      } else if (inputBuffer.equalsIgnoreCase("check_battery")) {
+        Serial.print("Battery Level: ");
+        Serial.println(getBatteryLevel());
+      } else if (inputBuffer.equalsIgnoreCase("check_voltage")) {
+        Serial.print("Battery Voltage: ");
+        Serial.println(getBatteryVoltage());
+      } else {
+        Serial.println(F("Unknown command."));
+      }
+
+      inputBuffer = ""; // Clear the buffer after processing the command
+    } else {
+      inputBuffer += incomingChar; // Append the incoming character to the buffer
+      lastInputTime = millis(); // Update the last input time
+    }
+  }
+
+  uint8_t uid[] = {0, 0, 0, 0, 0, 0, 0};  // Buffer to store the UID
+  uint8_t uidLength;                      // Length of the UID (7 bytes for UID of ISO14443A cards)
+
+  bool success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
+
+  if (success) {
+    Serial.println("Found an NFC tag.");
+    
+    // Convert UID array to String for easy comparison and logging
+    String uidStr;
+    for (uint8_t i = 0; i < uidLength; i++) {
+      uidStr += String(uid[i], HEX);
+    }
+
+    Serial.print("UID: ");
+    Serial.println(uidStr);
+
+    // Assuming '04A2B3C4D5' is the UID of the authorized tag
+    String authorizedUid = "04A2B3C4D5"; // Example UID, replace with the actual authorized UID
+    if (uidStr.equalsIgnoreCase(authorizedUid)) {
+      Serial.println("Authorized NFC Tag Detected!");
+
+      // Example: Activate or unlock device based on its current state
+      if (!Config.isActivate) {
+        Serial.println("Activating the device...");
+        Config.isActivate = true;
+        // Add your code here to handle activation
+      } else {
+        Serial.println("Unlocking the device...");
+        // Add your code here to handle unlocking
+      }
+    } else {
+      Serial.println("Unauthorized NFC Tag.");
+    }
+
+    if (nfc.tagPresent()) {
+        NfcTag tag = nfc.read();
+        Serial.print("Tag type: ");
+        Serial.println(tag.getTagType());
+        Serial.print("UID: ");
+        Serial.println(tag.getUidString());
+    }
+  }
 
   if (Config.isActivate) {  //alarm enalbled
     activateGPS();
@@ -196,7 +306,11 @@ void loop() {
   }
 
   if (MotionBig) {
-    PulseBuzzer(5, 500, 1000);  // repetitions, DurationOn , DurationOff
+    if(Config.isActivate == false){
+
+    } else if (Config.isActivate == true && MotionBig == true){
+      PulseBuzzer(5, 500, 1000);
+    }
     //sending positions & shock notif via SIM module
   }
 
@@ -214,7 +328,6 @@ void loop() {
       Serial.println(RotationData);
     }
   }
-
   //if a mvt is detected and bluetooth is disabled bluetooth activation
   if (MotionDetect == true) {
     tim_connec = millis();
@@ -239,62 +352,62 @@ void loop() {
   }
 
   //capture clocked GPS data
-  GPS.read();
-  if (GPS.newNMEAreceived()) {
-    Serial.print(GPS.lastNMEA());    // this also sets the newNMEAreceived() flag to false
-    if (!GPS.parse(GPS.lastNMEA()))  // this also sets the newNMEAreceived() flag to false
-      Serial.println("fail to parse");
-    ;  // we can fail to parse a   sentence in which case we should just wait for another
-  }
+GPS.read();
+//   if (GPS.newNMEAreceived()) {
+//     Serial.print(GPS.lastNMEA());    // this also sets the newNMEAreceived() flag to false
+//     if (!GPS.parse(GPS.lastNMEA()))  // this also sets the newNMEAreceived() flag to false
+//       Serial.println("fail to parse");
+//     ;  // we can fail to parse a   sentence in which case we should just wait for another
+//   }
 
-  if (GPS.fix && position_acquired == false) {  // if location detected
-    Serial.println("fix + false");
-    position_acquired = true;
-    GPS.fix = 0;
-    digitalWrite(GPS_WKUP_PIN, LOW);
-    GPS.sendCommand("$PMTK225,4*2F");  // send to backup mode
-  }
+//   if (GPS.fix && position_acquired == false) {  // if location detected
+//     Serial.println("fix + false");
+//     position_acquired = true;
+//     GPS.fix = 0;
+//     digitalWrite(GPS_WKUP_PIN, LOW);
+//     GPS.sendCommand("$PMTK225,4*2F");  // send to backup mode
+//   }
 
-  if (send_move) {  //sending of positions via SIM module
-    Serial.println("Envoi detection mouvement");
-    sim800l->setupGPRS("iot.1nce.net");
-    sim800l->connectGPRS();
-    String Route = "http://141.94.244.11:2000/sendNotfication/" + BLE.address();
-    String RouteCoord = "http://141.94.244.11:2000/updateCoordinate/" + BLE.address();
-    String str = "{\"latitude\": \" " + convertDMMtoDD(String(float(GPS.latitude), 4)) + "\", \"longitude\":\"" + convertDMMtoDD(String(float(GPS.longitude), 4)) + "\"}";
-    String bat = "{\"latitude\": \" " + convertDMMtoDD(String(float(GPS.latitude), 4)) + "\", \"longitude\":\"" + convertDMMtoDD(String(float(GPS.longitude), 4)) + "\", \"batterie\":\"" + String(getBatteryVoltage()) + "\"}";
-    char position[200];
-    char posbat[200];
-    str.toCharArray(position, str.length() + 1);
-    //Serial.println(str);
-    bat.toCharArray(posbat, bat.length() + 1);
-    Serial.println(posbat);
-    char direction[200];
-    char directionCoord[200];
-    Route.toCharArray(direction, Route.length() + 1);
-    RouteCoord.toCharArray(directionCoord, RouteCoord.length() + 1);
-    sim800l->doPost(direction, "application/json", position, 10000, 10000);
-    sim800l->doPost(directionCoord, "application/json", posbat, 10000, 10000);
-    sim800l->disconnectGPRS();
-    send_move = false;
-  }
+//   if (send_move) {  //sending of positions via SIM module
+//     Serial.println("Envoi detection mouvement");
+//     sim800l->setupGPRS("iot.1nce.net");
+//     sim800l->connectGPRS();
+//     String Route = "http://elderzia.fr/sendNotfication.php/" + BLE.address();
+//     String RouteCoord = "http://elderzia.fr/updateCoordinate/" + BLE.address();
+//     String str = "{\"latitude\": \" " + convertDMMtoDD(String(float(GPS.latitude), 4)) + "\", \"longitude\":\"" + convertDMMtoDD(String(float(GPS.longitude), 4)) + "\"}";
+//     String bat = "{\"latitude\": \" " + convertDMMtoDD(String(float(GPS.latitude), 4)) + "\", \"longitude\":\"" + convertDMMtoDD(String(float(GPS.longitude), 4)) + "\", \"batterie\":\"" + String(getBatteryVoltage()) + "\"}";
+//     char position[200];
+//     char posbat[200];
+//     str.toCharArray(position, str.length() + 1);
+//     //Serial.println(str);
+//     bat.toCharArray(posbat, bat.length() + 1);
+//     Serial.println(posbat);
+//     char direction[200];
+//     char directionCoord[200];
+//     Route.toCharArray(direction, Route.length() + 1);
+//     RouteCoord.toCharArray(directionCoord, RouteCoord.length() + 1);
+//     sim800l->doPost(direction, "application/json", position, 10000, 10000);
+//     sim800l->doPost(directionCoord, "application/json", posbat, 10000, 10000);
+//     sim800l->disconnectGPRS();
+//     send_move = false;
+//   }
 
-  if (send_position) {  //regular sending of positions via SIM module
-    Serial.println("Envoi regulier position");
-    sim800l->setupGPRS("iot.1nce.net");
-    sim800l->connectGPRS();
-    String RouteCoord = "http://141.94.244.11:2000/updateCoordinate/" + BLE.address();
-    String bat = "{\"latitude\": \" " + convertDMMtoDD(String(float(GPS.latitude), 4)) + "\", \"longitude\":\"" + convertDMMtoDD(String(float(GPS.longitude), 4)) + "\", \"batterie\":\"" + String(getBatteryVoltage()) + "\"}";
-    char posbat[200];
-    bat.toCharArray(posbat, bat.length() + 1);
-    Serial.println(posbat);
-    Serial.println(RouteCoord);
-    char directionCoord[200];
-    RouteCoord.toCharArray(directionCoord, RouteCoord.length() + 1);
-    sim800l->doPost(directionCoord, "application/json", posbat, 10000, 10000);
-    sim800l->disconnectGPRS();
-    send_position = false;
-  }
+//   if (send_position) {  //regular sending of positions via SIM module
+//     Serial.println("Envoi regulier position");
+//     sim800l->setupGPRS("iot.1nce.net");
+//     sim800l->connectGPRS();
+//     String RouteCoord = "http://elderzia.fr/updateCoordinate/" + BLE.address();
+//     String bat = "{\"latitude\": \" " + convertDMMtoDD(String(float(GPS.latitude), 4)) + "\", \"longitude\":\"" + convertDMMtoDD(String(float(GPS.longitude), 4)) + "\", \"batterie\":\"" + String(getBatteryVoltage()) + "\"}";
+//     char posbat[200];
+//     bat.toCharArray(posbat, bat.length() + 1);
+//     Serial.println(posbat);
+//     Serial.println(RouteCoord);
+//     char directionCoord[200];
+//     RouteCoord.toCharArray(directionCoord, RouteCoord.length() + 1);
+//     sim800l->doPost(directionCoord, "application/json", posbat, 10000, 10000);
+//     sim800l->disconnectGPRS();
+//     send_position = false;
+//   }
 }
 
 //------------- SETUP FUNCTIONS ------------------------------
@@ -305,8 +418,8 @@ void ble_setup(void) {
       ;
   }
   // set advertised local name and service UUID:
-  BLE.setLocalName("SportShield 5");
-  BLE.setDeviceName("SportShield 5");
+  BLE.setLocalName("L'adorable Team 1");
+  BLE.setDeviceName("L'adorable Team 1");
   BLE.setAdvertisedService(PasswordService);
   // add descriptors
   PasswordCharacteristic.addDescriptor(PasswordDescriptor);
@@ -376,29 +489,65 @@ void sim_setup(void) {
   while (signal <= 0) {
     delay(1000);
     signal = sim800l->getSignal();
+    Serial.println(F("Waiting signal..."));
   }
   Serial.println(String(signal));
   NetworkRegistration network = sim800l->getRegistrationStatus();
-  while (network != REGISTERED_HOME && network != REGISTERED_ROAMING) {
-    delay(1000);
-    network = sim800l->getRegistrationStatus();
-    Serial.print(network + " ");
-    Serial.println(F("Problem to register, retry in 1 sec"));
-    digitalWrite(LEDG, !digitalRead(LEDG));
-  }
+  // while (network != REGISTERED_HOME && network != REGISTERED_ROAMING) {
+  //   delay(1000);
+  //   network = sim800l->getRegistrationStatus();
+  //   Serial.print(network + " ");
+  //   Serial.println(F("Problem to register, retry in 1 sec"));
+  //   digitalWrite(LEDG, !digitalRead(LEDG));
+  // }
   delay(50);
   sim800l->setPowerMode(MINIMUM);      // set minimum functionnality mode
   digitalWrite(SIM800_DTR_PIN, HIGH);  // put in sleep mode
 }
 
+void nfc_setup(void) {
+  Serial.println("NFC_setup");
+  nfc.begin();
+
+  uint32_t versiondata = nfc.getFirmwareVersion();
+  if (!versiondata) {
+    Serial.print("Didn't find PN53x board");
+    while (1); // halt
+  }
+
+  // Got ok data, print it out!
+  Serial.print("Found chip PN5");
+  Serial.println((versiondata >> 24) & 0xFF, HEX);
+  Serial.print("Firmware ver. ");
+  Serial.print((versiondata >> 16) & 0xFF, DEC);
+  Serial.print('.');
+  Serial.println((versiondata >> 8) & 0xFF, DEC);
+
+  // configure board to read RFID tags and NFC tags
+  nfc.SAMConfig();
+
+  Serial.println("Waiting for an NFC card...");
+}
 
 //------------- ADDITIONAL FUNCTIONS ------------------------------
+
 float getBatteryVoltage() {
-  //unsigned int adcCount = analogRead(PIN_VBAT);
   float adcCount = analogRead(PIN_VBAT);
-  float adcVoltage = (((adcCount - 3000) / 4096) * 0.55) + 3.6;
-  //float vBat = adcVoltage * 1510.0/510.0;
+  float adcVoltage = (adcCount / 1023.0) * 5.0;  // Convert ADC count to voltage
   return adcVoltage;
+}
+
+float getBatteryLevel() {
+  const float minTension = 3.7;
+  const float maxTension = 4.2;
+  float batteryVoltage = getBatteryVoltage();
+
+  float batteryLevel = (batteryVoltage - minTension) / (maxTension - minTension) * 100;
+
+  // Constrain the battery level to 0-100%
+  batteryLevel = constrain(batteryLevel, 0, 100);
+
+  return batteryLevel;
 }
 
 // provides the absolute difference in acceleration between consecutive calls, helping to monitor changes in motion over time.
@@ -431,12 +580,12 @@ float getRotationData() {
   return fabs(RotationDataerence);
 }
 
-void Temps(void) {
+void Time(void) {
   unsigned long millisPassed = millis();
   unsigned int seconds = (millisPassed / 1000) % 60;
   unsigned int minutes = (millisPassed / (1000 * 60)) % 60;
   unsigned int hours = (millisPassed / (1000 * 60 * 60)) % 24;
-  Serial.print("Détecté a : ");
+  Serial.print("Detected at : ");
   Serial.print(hours);
   Serial.print("h");
   Serial.print(minutes);
@@ -508,7 +657,7 @@ void onDisconnect(BLEDevice central) {
 }
 
 void onWritePassword(BLEDevice central, BLECharacteristic characteristic) {
-  const int motDePasseAttendu = 13330;
+  const int motDePasseAttendu = 1;
   short int value = PasswordCharacteristic.value();
   Conversion(value);
   isAuthenticate = (value == motDePasseAttendu);
@@ -559,7 +708,7 @@ void onWriteActivation(BLEDevice central, BLECharacteristic characteristic) {
       delay(100);
       sim800l->setPowerMode(NORMAL);  // set normal functionnality mode
     } else {
-      Serial.print("Désactivation");
+      Serial.print("Desactivation");
       sim800l->setPowerMode(MINIMUM);      // set minimum functionnality mode
       digitalWrite(SIM800_DTR_PIN, HIGH);  // put in sleep mode
     }
@@ -576,11 +725,21 @@ void onReadActivation(BLEDevice central, BLECharacteristic characteristic) {
 
 void onWriteUnlock(BLEDevice central, BLECharacteristic characteristic) {
   if (isAuthenticate) {
-    // activate electromagnet
-    Serial.println("Unlock");
-    digitalWrite(aimantPin, HIGH);
-    delay(2000);
-    digitalWrite(aimantPin, LOW);
+    if (Config.isActivate != 0) {
+      // activate electromagnet
+      Serial.println("Unlock and Desactivate");
+      digitalWrite(aimantPin, HIGH);
+      delay(2000);
+      digitalWrite(aimantPin, LOW);
+      //Desactivate
+      Config.isActivate = 0;
+    } else {
+      // activate electromagnet
+      Serial.println("Unlock");
+      digitalWrite(aimantPin, HIGH);
+      delay(2000);
+      digitalWrite(aimantPin, LOW);
+    }
   }
 }
 
@@ -603,3 +762,17 @@ String convertDMMtoDD(String dmmCoordinates) {
 
   return ddCoordinates;
 }
+
+void interruptBuzzer() {
+  digitalWrite(buzzerPin, LOW);
+  MotionBig = false;
+  MotionSmall = false;
+  MotionDetect = false;
+}
+
+
+// Command useful :
+// activate_mode : Allows you to activate the security system
+// unlock_mode : Unlock the security system
+// check_battery : Show in the console the battery level
+// check_voltage : Show in the console the voltage used
