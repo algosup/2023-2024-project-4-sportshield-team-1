@@ -1,5 +1,5 @@
 # <h1 align="center">Sportshield Project Test Plan</h1>
-<p align="right">created: 3/14/2024<br>last modified: 3/28/2024</p> 
+<p align="right">created: 3/14/2024<br>last modified: 4/10/2024</p> 
 
 <details>
 <summary>
@@ -13,13 +13,14 @@
   - [II. Glossary](#ii-glossary)
   - [III. Test Strategy](#iii-test-strategy)
     - [A. Testing Scope](#a-testing-scope)
-    - [B. Testing Environment](#b-testing-environment)
-  - [V. Code Test](#v-code-test)
-  - [VI. Criteria](#vi-criteria)
-    - [A. Testing Criteria Schedule](#a-testing-criteria-schedule)
-  - [VII. Test Cases](#vii-test-cases)
-  - [VIII. Conclusion](#viii-conclusion)
-  - [IX. Documentation Approval](#ix-documentation-approval)
+    - [B. Out of Scope](#b-out-of-scope)
+  - [IV. Ressources and Environment](#iv-ressources-and-environment)
+    - [A. Testing Environment](#a-testing-environment)
+  - [V. Criteria](#v-criteria)
+    - [A. Entry Criteria](#a-entry-criteria)
+    - [B. Exit Criteria](#b-exit-criteria)
+  - [VI. Schedules](#vi-schedules)
+  - [VII. Risks and Assumptions](#vii-risks-and-assumptions)
 
 </details>
 
@@ -32,6 +33,34 @@ In this project we're focusing on refining the functionality and code base of <i
 For more information I invate you to read the [functional specification](/FuctionalSpecification/FunctionalSpecification.md).
 
 ## II. Glossary
+
+- Coris Innovation: Multi-sector expertise in systems and process engineering professions, Coris Innovation was created in 2015   
+  under the leadership of 2 enthusiasts of innovation and new technologies, Thibault and Stéphane, with the aim of overturning the 
+  anchors inherent in the world of service. Website (https://www.corisinnovation.com).
+
+- SportShield: “SportShield is an innovative anti-theft device designed for sports equipment, 
+  equipped with sensors and actuators to detect movement, activate an alarm, and 
+  notify the owner”.
+
+- GitHub: GitHub is an online software development platform. It's used for storing, tracking, and collaborating on software projects.
+  It makes it easy for developers to share code files and collaborate with fellow developers on open-source projects.
+
+- Visual Studio Code: Visual Studio Code is an extensible code editor developed by Microsoft for Windows, Linux and macOS. 
+  Features include debugging support, syntax highlighting, smart code completion, snippets, code refactoring, and integrated Git.
+
+- C++: C++ is a compiled programming language allowing programming under multiple paradigms, including procedural programming,    object-oriented programming, and generic programming.
+
+- Arduino: Arduino is the brand of an open-source prototyping platform that allows users to create interactive electronic objects from hardware-free electronic boards on which a microcontroller is located.
+  The diagrams of these electronic cards are published under a free license. Website (https://www.arduino.cc).
+
+- Software: All means of use, programs, procedures, documentation of a computer system.
+
+- Hardware: the physical part of the computer, that is, the parts and equipment that make it work.
+
+- NFC: technology that allows data to be transmitted between two devices located in immediate proximity, quickly and without prior manipulation of equipment.
+
+- GNSS: (global navigation satellite systems) provide the position of an element everywhere and in real time. 
+  These are the most accurate systems used by geolocation tools.
 
 ## III. Test Strategy
 
@@ -46,54 +75,53 @@ The objective is to focus the tests on the client's requests, ranked in ascendin
 | `AMSA` | Alarm Management and Simultaneous Actions | - Add the possibility to stop the alarm when it rings, even if the ringing cycle is not finished.</br> - Permit the alarm to ring while sending http notification to the server.</br> - Better management of the interruptions. |
 | `SI` | Security Issues | - Increase the security level to connect to the key features of the system.</br> - In order to give access to activation/deactivation of the alarm and unlocking of the cable. |
 
-### B. Testing Environment
+### B. Out of Scope
 
-## V. Code Test
+- Hardware related issues
+- Advanced connectivity features (Introducing new connectivity like Wi-Fi or cellular connectivity, is out of scope for this phase of testing.)
 
-## VI. Criteria
+## IV. Ressources and Environment
 
-### A. Testing Criteria Schedule
+### A. Testing Environment
 
-## VII. Test Cases
+The client is asking for the anti-theft system to work in urban situations as well as in the mountains, where temperatures can be more extreme and possibly below -10°C. Unfortunately, we are not located in the mountains, so we won't be able to conduct tests with extreme temperatures. However, we can conduct tests in urban environments with moderate temperatures. Our tests will aim to be as close as possible to the usage requested by the client.
 
-## VIII. Conclusion
+And the operating system we used is MacOS, language: C++, arduino IDE: Visual Studio, arduino Libraries are:
 
-## IX. Documentation Approval
+- NfcAdapter
+- PN532
+- SPI
 
-<!-- ### 3.2. Unit Tests
+All these librairies can be found here: https://github.com/Seeed-Studio/Seeed_Arduino_NFC
 
-### 3.3. Testing sessions
+## V. Criteria
 
-#### 3.3.1. Overview
+### A. Entry Criteria
 
-#### 3.3.2. Smoke Test
+### B. Exit Criteria
 
-##### 3.3.2.1. Smoke Testing Scope
+The exit criteria are predefined conditions that signal when testing activities can be concluded. They serve as benchmarks to assess whether the testing objectives have been met and whether the software system is ready for the next phase. By adhering to these criteria, we ensure that testing is terminated without compromising the quality or efficacy of the software.
 
-##### 3.3.2.2. Sequence of Smoke Testing
+- Shock detection: 99%
+- Unlock: 99%
+- Alarm: 98%
+- Shock Notification: 95%
+- GNSS position acquisition and transmission: 80%
+- 7 days of operating duration (6 hours in activation mode + 18 hours in stand-by mode per day)
 
-### 3.4. External Tools 
+## VI. Schedules
 
-#### 3.4.1. GitHub Actions
+| Date and time       | Deliverable              | Cheked by                     |
+| ------------------- | ------------------------ | ----------------------------- |
+| 18 March 2024, 5 PM | Functional Specification | Lucas Megnan, Séréna Bavarois |
+| 26 March 2024, 5 PM | Technical Specification  | Lucas Megnan, Mathis Lebel    |
+| 10 April 2024, 5 PM | Test Plan                | Lucas Megnan, Séréna Bavarois |
+| 10 April 2024, 5 PM | User Manual              | Lucas Megnan, Séréna Bavarois |
+| 10 April 2024, 5 PM | Final product            | All team members              |
 
-##### 3.4.1.1. GitHub Actions Scope
+## VII. Risks and Assumptions
 
-##### 3.4.1.2. Workflow
-
-##### 3.4.1.3. Configuration
-
-### 3.4.2. GitHub Issues
-
-### 3.4.3. Tests and Meetings
-
-## 4. Test Criteria
-
-### 4.1. Exit Criteria
-
-### 4.2. Suspension Criteria 
-
-## 5. Allocated Ressources
-
-### 5.1. Time
-
-### 5.2. Collaborators -->
+| <p align="center"> Risk </p> | <p align="center"> Mitigation </p> |
+|---|---|
+| Provided code isn't working | Isolating code's component |
+| Hardware failure | Get extra hardware or share with others teams |
