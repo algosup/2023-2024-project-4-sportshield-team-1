@@ -17,8 +17,7 @@
   - [IV. Ressources and Environment](#iv-ressources-and-environment)
     - [A. Testing Environment](#a-testing-environment)
   - [V. Criteria](#v-criteria)
-    - [A. Entry Criteria](#a-entry-criteria)
-    - [B. Exit Criteria](#b-exit-criteria)
+    - [A. Exit Criteria](#a-exit-criteria)
   - [VI. Schedules](#vi-schedules)
   - [VII. Risks and Assumptions](#vii-risks-and-assumptions)
 
@@ -30,7 +29,7 @@
 
 In this project we're focusing on refining the functionality and code base of <i>SportShield</i>. Our goals include optimising battery usage, integrating NFC device management, improving alarm functionality and enhancing security features.
 
-For more information I invate you to read the [functional specification](/FuctionalSpecification/FunctionalSpecification.md).
+For more information I invite you to read the [functional specification](/FuctionalSpecification/FunctionalSpecification.md).
 
 ## II. Glossary
 
@@ -96,9 +95,7 @@ All these librairies can be found here: https://github.com/Seeed-Studio/Seeed_Ar
 
 ## V. Criteria
 
-### A. Entry Criteria
-
-### B. Exit Criteria
+### A. Exit Criteria
 
 The exit criteria are predefined conditions that signal when testing activities can be concluded. They serve as benchmarks to assess whether the testing objectives have been met and whether the software system is ready for the next phase. By adhering to these criteria, we ensure that testing is terminated without compromising the quality or efficacy of the software.
 
